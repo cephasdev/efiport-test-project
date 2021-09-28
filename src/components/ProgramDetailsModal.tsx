@@ -1,0 +1,51 @@
+import React, { useState, useEffect, useContext } from 'react';
+import DispatchContext from '../DispatchContext';
+import StateContext from '../StateContext';
+
+function ProgramDetailsModal() {
+  const appState = useContext(StateContext);
+  const appDispatch = useContext(DispatchContext);
+
+  if (!appState.projectDetailsModalOpen) {
+    return null;
+  }
+
+  return (
+    <div className="modal fade d-block show" role="dialog">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Modal title</h5>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <p>Modal body text goes here.</p>
+          </div>
+          <div className="modal-footer">
+            <button
+              type="button"
+              onClick={() =>
+                appDispatch({
+                  type: 'closeProjectDetailsModal'
+                })
+              }
+              className="btn btn-primary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ProgramDetailsModal;
