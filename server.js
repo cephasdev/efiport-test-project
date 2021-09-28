@@ -92,9 +92,9 @@ app.post('/api/project/new', (req, res) => {
             const projectData = {
                 title: req.body.title,
                 program: req.body.program,
-                research_area: req.body.research_area,
+                research_area: req.body.researchArea,
                 literature: req.body.literature,
-                isgroupproject: req.body.isgroupproject,
+                isgroupproject: req.body.isGroupProject,
                 users: req.body.users
             };
             await projectsCollection.insertOne(projectData);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
 
@@ -76,17 +76,24 @@ function EditForm() {
             title,
             program,
             researchArea,
-            literature,
+            literature: [literature],
             isGroupProject,
             users
         };
-        // TODO: Dispatch the "save" action
         console.log('projectData:', projectData);
         appDispatch({
             type: 'saveProject',
             value: projectData
         });
     }, [appState.savingNewProjectIsExecuting]);
+
+    function onUsersChange(ev: ChangeEvent<HTMLSelectElement>) {
+        let values = Array.from(
+            ev.target.selectedOptions,
+            (option) => option.value
+        );
+        setUsers(values);
+    }
 
     return (
         <div className="edit-form container p-3">
@@ -179,10 +186,11 @@ function EditForm() {
                             Users
                         </label>
                         <select
-                            onChange={(ev) => setUsers([])}
+                            onChange={onUsersChange}
                             className="form-select"
                             name="users"
                             id="users"
+                            multiple
                         >
                             {predefinedUsers.map((user, idx) => {
                                 return (

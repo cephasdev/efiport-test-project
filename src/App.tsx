@@ -8,7 +8,7 @@ import DispatchContext from './DispatchContext';
 import { useImmerReducer } from 'use-immer';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilterBox from './components/FilterBox';
-import axios from 'axios';
+// import axios from 'axios';
 const initialState = {
     isEditMode: false,
     projectDetailsModalOpen: false,
