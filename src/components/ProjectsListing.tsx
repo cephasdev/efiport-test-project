@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DispatchContext from '../DispatchContext';
+import './ProjectsListing.css';
 
-function ProgramsListing() {
+function ProjectsListing() {
   interface IProject {
     _id: string;
     title: string;
@@ -30,8 +31,6 @@ function ProgramsListing() {
       .then((res) => res.json())
       .then((data) => {
         console.log('/api/project/id', data);
-        // // openProjectDetails(data);
-        // setProjectDetails(data);
         appDispatch({ type: 'projectDetailsLoaded', value: data });
       })
       .catch((err) => {
@@ -72,4 +71,4 @@ function ProgramsListing() {
   );
 }
 
-export default ProgramsListing;
+export default ProjectsListing;

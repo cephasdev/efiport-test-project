@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/Header';
-import ProgramsListing from './components/ProgramsListing';
+import ProjectsListing from './components/ProjectsListing';
 import EditForm from './components/EditForm';
 import ProgramDetailsModal from './components/ProgramDetailsModal';
 import StateContext from './StateContext';
@@ -75,7 +75,7 @@ function App() {
             <Switch>
               <Route path="/" exact>
                 <FilterBox />
-                <ProgramsListing />
+                <ProjectsListing />
               </Route>
               <Route path="/edit" exact>
                 <EditForm />
