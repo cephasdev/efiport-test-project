@@ -8,11 +8,21 @@ import DispatchContext from './DispatchContext';
 import { useImmerReducer } from 'use-immer';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilterBox from './components/FilterBox';
+import { IProject } from './TypedInterfaces';
+
+// interface IProject {
+//     _id: string;
+//     title: string;
+//     program: string;
+//     research_area: string;
+//     isgroupproject: boolean;
+//     users: string[];
+// }
 
 const initialState = {
     isEditMode: false,
     projectDetailsModalOpen: false,
-    projectDetails: {},
+    projectDetails: {} as IProject,
     savingNewProjectIsExecuting: false
 };
 
@@ -63,6 +73,7 @@ function appReducer(draft: any, action: any) {
         case 'projectDetailsLoaded':
             draft.projectDetailsModalOpen = true;
             draft.projectDetails = action.value;
+            console.log('projectDetailsLoaded', draft.projectDetails);
             break;
         case 'closeProjectDetailsModal':
             draft.projectDetailsModalOpen = false;

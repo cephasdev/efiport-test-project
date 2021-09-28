@@ -88,6 +88,7 @@ function EditForm() {
     }, [appState.savingNewProjectIsExecuting]);
 
     function onUsersChange(ev: ChangeEvent<HTMLSelectElement>) {
+        // https://stackoverflow.com/a/49684109
         let values = Array.from(
             ev.target.selectedOptions,
             (option) => option.value

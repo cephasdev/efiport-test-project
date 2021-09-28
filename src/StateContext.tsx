@@ -1,9 +1,10 @@
 import { createContext } from 'react';
+import { IProject } from './TypedInterfaces';
 
 interface IStateContextProps {
     isEditMode: boolean;
     projectDetailsModalOpen: boolean;
-    projectDetails: object;
+    projectDetails: IProject;
     savingNewProjectIsExecuting: boolean;
 }
 

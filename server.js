@@ -44,28 +44,53 @@ app.get('/api/researchareas', (req, res) => {
 });
 
 app.get('/api/projects', (req, res) => {
-    const projectsFromDb = [
-        {
-            title: 'Project 10001',
-            program: 'Program 10001',
-            isGroupProject: false
-        },
-        {
-            title: 'Project 10002',
-            program: 'Program 10002',
-            isGroupProject: true
+    // const projectsFromDb = [
+    //     {
+    //         title: 'Project 10001',
+    //         program: 'Program 10001',
+    //         isGroupProject: false
+    //     },
+    //     {
+    //         title: 'Project 10002',
+    //         program: 'Program 10002',
+    //         isGroupProject: true
+    //     }
+    // ];
+    // res.json(projectsFromDb);
+
+    mongodb.MongoClient.connect(
+        process.env.CONNECTIONSTRING,
+        async function (err, client) {
+            const db = client.db();
+            const projectsCollection = db.collection('projects');
+            const projects = await projectsCollection.find().toArray();
+            res.json(projects);
         }
-    ];
-    res.json(projectsFromDb);
+    );
 });
 
 app.get('/api/project/:id', (req, res) => {
-    const foundProjectFromDb = {
-        title: 'Project 10001',
-        program: 'Program 10001',
-        isGroupProject: false
-    };
-    res.json(foundProjectFromDb);
+    // const foundProjectFromDb = {
+    //     title: 'Project 10001',
+    //     program: 'Program 10001',
+    //     isGroupProject: false
+    // };
+    // res.json(foundProjectFromDb);
+
+    console.log('/api/project/:id');
+    console.log(req.params.id);
+
+    mongodb.MongoClient.connect(
+        process.env.CONNECTIONSTRING,
+        async function (err, client) {
+            const db = client.db();
+            const projectsCollection = db.collection('projects');
+            const project = await projectsCollection.findOne({
+                _id: mongodb.ObjectId(req.params.id)
+            });
+            res.json(project);
+        }
+    );
 });
 
 app.post('/api/project/new', (req, res) => {
