@@ -8,16 +8,13 @@ import DispatchContext from './DispatchContext';
 import { useImmerReducer } from 'use-immer';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilterBox from './components/FilterBox';
-// import axios from 'axios';
+
 const initialState = {
     isEditMode: false,
     projectDetailsModalOpen: false,
     projectDetails: {},
     savingNewProjectIsExecuting: false
 };
-// async function doThePost(postObj: any) {
-//     return await axios.post('http://localhost:3001/api/project/new', postObj);
-// }
 
 function appReducer(draft: any, action: any) {
     switch (action.type) {
@@ -56,8 +53,6 @@ function appReducer(draft: any, action: any) {
                             console.log(err);
                             // draft.savingNewProjectIsExecuting = false;
                         });
-
-                    // const res = doThePost(action.value);
                 }
                 // close the edit form
                 draft.isEditMode = false;
@@ -75,9 +70,6 @@ function appReducer(draft: any, action: any) {
         case 'savingNewProjectStarted':
             draft.savingNewProjectIsExecuting = true;
             break;
-        // case 'savingNewProjectFinished':
-        //     draft.savingNewProjectIsExecuting = false;
-        //     break;
     }
 }
 
