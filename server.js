@@ -14,7 +14,6 @@ app.get('/api/programs', (req, res) => {
         process.env.CONNECTIONSTRING,
         async function (err, client) {
             if (err) {
-                console.log(err);
                 res.json([]);
             }
             if (!client) {
@@ -44,30 +43,6 @@ app.get('/api/researchareas', (req, res) => {
 });
 
 app.get('/api/projects', (req, res) => {
-    // // const projectsFromDb = [
-    // //     {
-    // //         title: 'Project 10001',
-    // //         program: 'Program 10001',
-    // //         isGroupProject: false
-    // //     },
-    // //     {
-    // //         title: 'Project 10002',
-    // //         program: 'Program 10002',
-    // //         isGroupProject: true
-    // //     }
-    // // ];
-    // // res.json(projectsFromDb);
-
-    // mongodb.MongoClient.connect(
-    //     process.env.CONNECTIONSTRING,
-    //     async function (err, client) {
-    //         const db = client.db();
-    //         const projectsCollection = db.collection('projects');
-    //         const projects = await projectsCollection.find().toArray();
-    //         res.json(projects);
-    //     }
-    // );
-
     mongodb.MongoClient.connect(
         process.env.CONNECTIONSTRING,
         async function (err, client) {
@@ -98,16 +73,6 @@ app.get('/api/projects', (req, res) => {
 });
 
 app.get('/api/project/:id', (req, res) => {
-    // const foundProjectFromDb = {
-    //     title: 'Project 10001',
-    //     program: 'Program 10001',
-    //     isGroupProject: false
-    // };
-    // res.json(foundProjectFromDb);
-
-    console.log('/api/project/:id');
-    console.log(req.params.id);
-
     mongodb.MongoClient.connect(
         process.env.CONNECTIONSTRING,
         async function (err, client) {
@@ -156,7 +121,6 @@ app.get('/api/project/:id', (req, res) => {
                     }
                 ])
                 .toArray();
-            console.log(project);
             if (project.length == 0) {
                 return res.json({});
             }
@@ -167,8 +131,6 @@ app.get('/api/project/:id', (req, res) => {
 });
 
 app.post('/api/project/new', (req, res) => {
-    console.log('/api/project/new started');
-
     const projectData = {
         title: req.body.title,
         program: req.body.program,
@@ -183,7 +145,6 @@ app.post('/api/project/new', (req, res) => {
     mongodb.MongoClient.connect(
         process.env.CONNECTIONSTRING,
         async function (err, client) {
-            console.log('/api/project/new async db call started');
             const db = client.db();
             const projectsCollection = db.collection('projects');
 
@@ -201,16 +162,7 @@ app.post('/api/project/new', (req, res) => {
     );
 });
 
-// app.get('/api/project/search/:program?/:researcharea?', (req, res) => {
 app.get('/api/search/project', (req, res) => {
-    // console.log('/api/project/search/:program/:researcharea started');
-    // console.log(req.params.program);
-    // console.log(req.params.researcharea);
-    console.log('/api/search/project started');
-    console.log(req.query.program);
-    console.log(req.query.researcharea);
-    console.log(req.query.isgroupproject);
-
     mongodb.MongoClient.connect(
         process.env.CONNECTIONSTRING,
         async function (err, client) {
@@ -218,7 +170,6 @@ app.get('/api/search/project', (req, res) => {
             const projectsCollection = db.collection('projects');
 
             const lookupAggregationMap = [
-                // { $match: { _id: mongodb.ObjectId(req.params.id) } },
                 {
                     $addFields: {
                         convertedProgramId: {
@@ -250,20 +201,6 @@ app.get('/api/search/project', (req, res) => {
                     }
                 }
             ];
-            // if (req.params.program) {
-            //     lookupAggregationMap.push({
-            //         $match: {
-            //             program: req.params.program
-            //         }
-            //     });
-            // }
-            // if (req.params.researcharea) {
-            //     lookupAggregationMap.push({
-            //         $match: {
-            //             research_area: req.params.researcharea
-            //         }
-            //     });
-            // }
             if (req.query.program) {
                 lookupAggregationMap.push({
                     $match: {
@@ -289,12 +226,8 @@ app.get('/api/search/project', (req, res) => {
             }
 
             const project = await projectsCollection
-                // .findOne({
-                //     _id: mongodb.ObjectId(req.params.id)
-                // })
                 .aggregate(lookupAggregationMap)
                 .toArray();
-            // console.log(project);
             if (project.length == 0) {
                 return res.json({});
             }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import StateContext from '../StateContext';
 import DispatchContext from '../DispatchContext';
 import { Link } from 'react-router-dom';
@@ -9,27 +9,12 @@ function Header() {
     const [saveTrigerred, setSaveTrigerred] = useState(false);
 
     function onSaveClicked() {
-        //console.log('onSaveClicked', '1111');
         if (saveTrigerred) {
-            //console.log('onSaveClicked', '2222');
             return;
         }
 
-        //console.log('onSaveClicked', '3333');
         setSaveTrigerred(true);
 
-        // const projectData = {
-        //     title: 'New Project',
-        //     program: '7898989899',
-        //     research_area: 'asdasdasd',
-        //     literature: [],
-        //     isgroupproject: false,
-        //     users: []
-        // };
-        // appDispatch({
-        //     type: 'saveProject',
-        //     value: projectData
-        // });
         appDispatch({
             type: 'savingNewProjectStarted'
         });

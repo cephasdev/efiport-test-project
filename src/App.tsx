@@ -1,4 +1,3 @@
-import React from 'react';
 import Header from './components/Header';
 import ProjectsListing from './components/ProjectsListing';
 import EditForm from './components/EditForm';
@@ -9,15 +8,6 @@ import { useImmerReducer } from 'use-immer';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import FilterBox from './components/FilterBox';
 import { IProject } from './TypedInterfaces';
-
-// interface IProject {
-//     _id: string;
-//     title: string;
-//     program: string;
-//     research_area: string;
-//     isgroupproject: boolean;
-//     users: string[];
-// }
 
 function App() {
     const initialState = {
@@ -57,9 +47,7 @@ function App() {
             case 'saveProject':
                 try {
                     // save values from the edit form
-                    console.log('/api/program/new', action.value);
                     if (action.value) {
-                        console.log('/api/program/new', 'Calling POST');
                         fetch('http://localhost:3001/api/project/new', {
                             method: 'POST',
                             headers: {
@@ -68,20 +56,17 @@ function App() {
                             body: JSON.stringify(action.value)
                             // body: action.value
                         })
-                            // .then((res) => res.json())
                             .then((data) => {
                                 console.log(
                                     '/api/program/new',
                                     'New project was successfully saved.'
                                 );
-                                // draft.savingNewProjectIsExecuting = false;
                             })
                             .catch((err) => {
                                 console.log(
                                     'There was an error calling the /api/program/new endpoint.'
                                 );
                                 console.log(err);
-                                // draft.savingNewProjectIsExecuting = false;
                             });
                     }
                     // close the edit form
@@ -94,7 +79,6 @@ function App() {
             case 'projectDetailsLoaded':
                 draft.projectDetailsModalOpen = true;
                 draft.projectDetails = action.value;
-                console.log('projectDetailsLoaded', draft.projectDetails);
                 break;
             case 'closeProjectDetailsModal':
                 draft.projectDetailsModalOpen = false;
@@ -103,7 +87,6 @@ function App() {
                 draft.savingNewProjectIsExecuting = true;
                 break;
             case 'projectsFilterSelected':
-                console.log('projectsFilterSelected!!!');
                 draft.projectListIsLoading = true;
                 const filterParams = action.value;
                 let endpointUrl = 'http://localhost:3001/api/search/project?';
@@ -118,22 +101,9 @@ function App() {
                     query.push('isgroupproject=' + filterParams.isGroupProject);
                 }
                 endpointUrl += query.join('&');
-                console.log(endpointUrl);
-                fetch(
-                    // `http://localhost:3001/api/search/project/${filterParams.program}/${filterParams.researchArea}`
-                    endpointUrl
-                )
+                fetch(endpointUrl)
                     .then((res) => res.json())
                     .then((data) => {
-                        console.log(
-                            // `/api/search/project/${filterParams.program}/${filterParams.researchArea}`,
-                            endpointUrl,
-                            data
-                        );
-                        // appDispatch({ type: 'projectDetailsLoaded', value: data });
-                        // setIsLoading(false);
-                        console.log('Received projectsList!');
-                        // // draft.projectsList = data;
                         dispatch({
                             type: 'projectsListingLoaded',
                             value: data
@@ -142,12 +112,10 @@ function App() {
                     .catch((err) => {
                         console.log('There was an error filtering projects.');
                         console.log(err);
-                        // setIsLoading(false);
                         draft.projectListIsLoading = false;
                     });
                 break;
             case 'projectsFilteringCleared':
-                console.log('projectsFilteringCleared!!!');
                 draft.projectListIsLoading = true;
                 draft.projectFilters = {
                     program: '',
@@ -165,8 +133,6 @@ function App() {
         fetch('http://localhost:3001/api/projects')
             .then((res) => res.json())
             .then((data) => {
-                // setProjects(data);
-                // setIsLoading(false);
                 dispatch({
                     type: 'projectsListingLoaded',
                     value: data
@@ -176,7 +142,6 @@ function App() {
                 console.log(
                     'There was an error calling the /api/projects endpoint.'
                 );
-                // setIsLoading(false);
             });
     }
 

@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Spinner from './Spinner';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
-import { IProgram, IResearchArea } from '../TypedInterfaces';
 
 function FilterBox() {
-    // const [programs, setPrograms] = useState<IProgram[]>([]);
-    // const [researchAreas, setResearchAreas] = useState<IResearchArea[]>([]);
     const [program, setProgram] = useState('');
     const [researchArea, setResearchArea] = useState('');
     const [isGroupProject, setIsGroupProject] = useState('');
@@ -20,7 +17,6 @@ function FilterBox() {
         fetch('http://localhost:3001/api/programs')
             .then((res) => res.json())
             .then((data) => {
-                // setPrograms(data);
                 setIsProgramsLoading(false);
                 appDispatch({ type: 'programsLoaded', value: data });
             })
@@ -36,7 +32,6 @@ function FilterBox() {
         fetch('http://localhost:3001/api/researchareas')
             .then((res) => res.json())
             .then((data) => {
-                // setResearchAreas(data);
                 setIsResearchAreasLoading(false);
                 appDispatch({ type: 'researchAreasLoaded', value: data });
             })
@@ -49,7 +44,6 @@ function FilterBox() {
     }, []);
 
     useEffect(() => {
-        console.log('filtering', 'program or researchArea changed.');
         if (program || researchArea || isGroupProject) {
             appDispatch({
                 type: 'projectsFilterSelected',
@@ -69,33 +63,6 @@ function FilterBox() {
     }
 
     return (
-        // <div className="filter-box d-flex align-center container">
-        //     <span className="m-3">Filter by:</span>
-        //     <div className="m-2">
-        //         <label className="mr-1" htmlhtmlFor="project-title">
-        //             Title
-        //         </label>
-        //         <input
-        //             className="m-1"
-        //             type="text"
-        //             name="project-title"
-        //             id="project-title"
-        //         />
-        //     </div>
-        //     <div className="m-2">
-        //         <label htmlhtmlFor="program">Program</label>
-        //         <select className="m-1" name="program" id="program">
-        //             <option value=""></option>
-        //         </select>
-        //     </div>
-        //     <div className="m-2">
-        //         <label htmlhtmlFor="research-area">Research Area</label>
-        //         <select className="m-1" name="research-area" id="research-area">
-        //             <option value=""></option>
-        //         </select>
-        //     </div>
-        // </div>
-
         <div className="filter-box d-flex align-center container p-3">
             <div className="row g-3 align-items-center">
                 <div className="col-auto">
