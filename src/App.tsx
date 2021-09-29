@@ -21,6 +21,8 @@ import { IProject } from './TypedInterfaces';
 
 const initialState = {
     isEditMode: false,
+    programs: [],
+    researchAreas: [],
     projectDetailsModalOpen: false,
     projectDetails: {} as IProject,
     savingNewProjectIsExecuting: false
@@ -28,6 +30,12 @@ const initialState = {
 
 function appReducer(draft: any, action: any) {
     switch (action.type) {
+        case 'programsLoaded':
+            draft.programs = action.value;
+            break;
+        case 'researchAreasLoaded':
+            draft.researchAreas = action.value;
+            break;
         case 'openEdit':
             draft.isEditMode = true;
             break;

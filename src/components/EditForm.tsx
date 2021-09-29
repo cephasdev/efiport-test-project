@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
 import { useHistory } from 'react-router-dom';
-import Spinner from './Spinner';
+// import Spinner from './Spinner';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
-import { IProgram } from '../TypedInterfaces';
+// import { IProgram } from '../TypedInterfaces';
 
 function EditForm() {
     const history = useHistory();
@@ -11,13 +11,13 @@ function EditForm() {
     //     _id: string;
     //     title: string;
     // }
-    interface IArea {
-        _id: string;
-        title: string;
-    }
+    // interface IArea {
+    //     _id: string;
+    //     title: string;
+    // }
 
-    const [programs, setPrograms] = useState<IProgram[]>([]);
-    const [researchAreas, setResearchAreas] = useState<IArea[]>([]);
+    // const [programs, setPrograms] = useState<IProgram[]>([]);
+    // const [researchAreas, setResearchAreas] = useState<IArea[]>([]);
     // const [isGroupProject, setIsGroupProject] = useState(false);
     const [title, setTitle] = useState('');
     const [program, setProgram] = useState('');
@@ -25,8 +25,8 @@ function EditForm() {
     const [literature, setLiterature] = useState('');
     const [isGroupProject, setIsGroupProject] = useState(false);
     const [users, setUsers] = useState<string[]>([]);
-    const [isProgramsLoading, setIsProgramsLoading] = useState(true);
-    const [isResearchAreasLoading, setIsResearchAreasLoading] = useState(true);
+    // const [isProgramsLoading, setIsProgramsLoading] = useState(true);
+    // const [isResearchAreasLoading, setIsResearchAreasLoading] = useState(true);
 
     const predefinedUsers = [
         'John Smith',
@@ -38,35 +38,35 @@ function EditForm() {
     const appState = useContext(StateContext);
     const appDispatch = useContext(DispatchContext);
 
-    useEffect(() => {
-        fetch('http://localhost:3001/api/programs')
-            .then((res) => res.json())
-            .then((data) => {
-                setPrograms(data);
-                setIsProgramsLoading(false);
-            })
-            .catch((err) => {
-                console.log(
-                    'There was an error calling the /api/programs endpoint.'
-                );
-                setIsProgramsLoading(false);
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetch('http://localhost:3001/api/programs')
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setPrograms(data);
+    //             setIsProgramsLoading(false);
+    //         })
+    //         .catch((err) => {
+    //             console.log(
+    //                 'There was an error calling the /api/programs endpoint.'
+    //             );
+    //             setIsProgramsLoading(false);
+    //         });
+    // }, []);
 
-    useEffect(() => {
-        fetch('http://localhost:3001/api/researchareas')
-            .then((res) => res.json())
-            .then((data) => {
-                setResearchAreas(data);
-                setIsResearchAreasLoading(false);
-            })
-            .catch((err) => {
-                console.log(
-                    'There was an error calling the /api/researchareas endpoint.'
-                );
-                setIsResearchAreasLoading(false);
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetch('http://localhost:3001/api/researchareas')
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setResearchAreas(data);
+    //             setIsResearchAreasLoading(false);
+    //         })
+    //         .catch((err) => {
+    //             console.log(
+    //                 'There was an error calling the /api/researchareas endpoint.'
+    //             );
+    //             setIsResearchAreasLoading(false);
+    //         });
+    // }, []);
 
     useEffect(() => {
         setTitle('');
@@ -112,9 +112,9 @@ function EditForm() {
         setUsers(values);
     }
 
-    if (isProgramsLoading || isResearchAreasLoading) {
-        return <Spinner />;
-    }
+    // if (isProgramsLoading || isResearchAreasLoading) {
+    //     return <Spinner />;
+    // }
 
     return (
         <div className="edit-form container p-3">
@@ -131,7 +131,7 @@ function EditForm() {
                         id="program"
                     >
                         <option value="">Choose Program</option>
-                        {programs.map((prog, idx) => {
+                        {appState.programs.map((prog, idx) => {
                             return (
                                 <option key={idx} value={prog._id}>
                                     {prog.title}
@@ -164,7 +164,7 @@ function EditForm() {
                         id="researchArea"
                     >
                         <option value="">Choose Research Area</option>
-                        {researchAreas.map((area, idx) => {
+                        {appState.researchAreas.map((area, idx) => {
                             return (
                                 <option key={idx} value={area._id}>
                                     {area.title}

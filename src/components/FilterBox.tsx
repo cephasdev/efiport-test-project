@@ -1,64 +1,129 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import Spinner from './Spinner';
+import DispatchContext from '../DispatchContext';
+import StateContext from '../StateContext';
+import { IProgram, IResearchArea } from '../TypedInterfaces';
 
 function FilterBox() {
-  return (
-    // <div className="filter-box d-flex align-center container">
-    //     <span className="m-3">Filter by:</span>
-    //     <div className="m-2">
-    //         <label className="mr-1" htmlhtmlFor="project-title">
-    //             Title
-    //         </label>
-    //         <input
-    //             className="m-1"
-    //             type="text"
-    //             name="project-title"
-    //             id="project-title"
-    //         />
-    //     </div>
-    //     <div className="m-2">
-    //         <label htmlhtmlFor="program">Program</label>
-    //         <select className="m-1" name="program" id="program">
-    //             <option value=""></option>
-    //         </select>
-    //     </div>
-    //     <div className="m-2">
-    //         <label htmlhtmlFor="research-area">Research Area</label>
-    //         <select className="m-1" name="research-area" id="research-area">
-    //             <option value=""></option>
-    //         </select>
-    //     </div>
-    // </div>
+    // const [programs, setPrograms] = useState<IProgram[]>([]);
+    // const [researchAreas, setResearchAreas] = useState<IResearchArea[]>([]);
+    const [isProgramsLoading, setIsProgramsLoading] = useState(true);
+    const [isResearchAreasLoading, setIsResearchAreasLoading] = useState(true);
 
-    <div className="filter-box d-flex align-center container">
-      {/* <form className="form-inline">
-                <div className="form-group mb-2">
-                    <label htmlFor="staticEmail2" className="sr-only">
-                        Email
-                    </label>
-                    <input
-                        type="text"
-                        readOnly
-                        className="form-control-plaintext"
-                        id="staticEmail2"
-                    />
+    const appState = useContext(StateContext);
+    const appDispatch = useContext(DispatchContext);
+
+    useEffect(() => {
+        fetch('http://localhost:3001/api/programs')
+            .then((res) => res.json())
+            .then((data) => {
+                // setPrograms(data);
+                setIsProgramsLoading(false);
+                appDispatch({ type: 'programsLoaded', value: data });
+            })
+            .catch((err) => {
+                console.log(
+                    'There was an error calling the /api/programs endpoint.'
+                );
+                setIsProgramsLoading(false);
+            });
+    }, []);
+
+    useEffect(() => {
+        fetch('http://localhost:3001/api/researchareas')
+            .then((res) => res.json())
+            .then((data) => {
+                // setResearchAreas(data);
+                setIsResearchAreasLoading(false);
+                appDispatch({ type: 'researchAreasLoaded', value: data });
+            })
+            .catch((err) => {
+                console.log(
+                    'There was an error calling the /api/researchareas endpoint.'
+                );
+                setIsResearchAreasLoading(false);
+            });
+    }, []);
+
+    if (isProgramsLoading || isResearchAreasLoading) {
+        return <Spinner />;
+    }
+
+    return (
+        // <div className="filter-box d-flex align-center container">
+        //     <span className="m-3">Filter by:</span>
+        //     <div className="m-2">
+        //         <label className="mr-1" htmlhtmlFor="project-title">
+        //             Title
+        //         </label>
+        //         <input
+        //             className="m-1"
+        //             type="text"
+        //             name="project-title"
+        //             id="project-title"
+        //         />
+        //     </div>
+        //     <div className="m-2">
+        //         <label htmlhtmlFor="program">Program</label>
+        //         <select className="m-1" name="program" id="program">
+        //             <option value=""></option>
+        //         </select>
+        //     </div>
+        //     <div className="m-2">
+        //         <label htmlhtmlFor="research-area">Research Area</label>
+        //         <select className="m-1" name="research-area" id="research-area">
+        //             <option value=""></option>
+        //         </select>
+        //     </div>
+        // </div>
+
+        <div className="filter-box d-flex align-center container p-3">
+            <div className="row g-3 align-items-center">
+                <div className="col-auto">
+                    <span id="passwordHelpInline" className="form-text">
+                        Filter projects:
+                    </span>
                 </div>
-                <div className="form-group mx-sm-3 mb-2">
-                    <label htmlFor="inputPassword2" className="sr-only">
-                        Password
+                <div className="col-auto">
+                    <label htmlFor="filterProgram" className="col-form-label">
+                        Program
                     </label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="inputPassword2"
-                        placeholder="Password"
-                    />
                 </div>
-                <button type="submit" className="btn btn-primary mb-2">
-                    Confirm identity
-                </button>
-            </form> */}
-    </div>
-  );
+                <div className="col-auto">
+                    <select name="filterProgram" id="filterProgram">
+                        <option value=""></option>
+                        {appState.programs.map((prog, idx) => {
+                            return (
+                                <option key={idx} value={prog._id}>
+                                    {prog.title}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+                <div className="col-auto">
+                    <label
+                        htmlFor="filterResearchArea"
+                        className="col-form-label"
+                    >
+                        Research Area
+                    </label>
+                </div>
+                <div className="col-auto">
+                    <select name="filterResearchArea" id="filterResearchArea">
+                        <option value=""></option>
+                        {appState.researchAreas.map((area, idx) => {
+                            return (
+                                <option key={idx} value={area._id}>
+                                    {area.title}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default FilterBox;

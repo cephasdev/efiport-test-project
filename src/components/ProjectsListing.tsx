@@ -55,7 +55,7 @@ function ProjectsListing() {
 
     return (
         <div className="programs-listing container p-3">
-            <h2>Programs</h2>
+            <h2>Projects</h2>
 
             <table className="table table-striped">
                 <thead>
