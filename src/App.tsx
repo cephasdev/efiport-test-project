@@ -66,6 +66,7 @@ function appReducer(draft: any, action: any) {
                 }
                 // close the edit form
                 draft.isEditMode = false;
+                draft.savingNewProjectIsExecuting = false;
             } catch (err) {
                 console.log('Error on save.');
             }

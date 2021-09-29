@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
+import { useHistory } from 'react-router-dom';
 import Spinner from './Spinner';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
 import { IProgram } from '../TypedInterfaces';
 
 function EditForm() {
+    const history = useHistory();
     // interface IProgram {
     //     _id: string;
     //     title: string;
@@ -94,6 +96,12 @@ function EditForm() {
             value: projectData
         });
     }, [appState.savingNewProjectIsExecuting]);
+
+    useEffect(() => {
+        if (!appState.isEditMode) {
+            history.push('/');
+        }
+    }, [appState.isEditMode]);
 
     function onUsersChange(ev: ChangeEvent<HTMLSelectElement>) {
         // https://stackoverflow.com/a/49684109

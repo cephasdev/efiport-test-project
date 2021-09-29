@@ -52,6 +52,13 @@ function Header() {
                         onClick={onSaveClicked}
                         className="btn btn-primary btn-large m-1"
                     >
+                        {appState.savingNewProjectIsExecuting && (
+                            <span
+                                className="spinner-border spinner-border-sm mx-2"
+                                role="status"
+                                aria-hidden="true"
+                            ></span>
+                        )}
                         Save
                     </button>
                 </div>
