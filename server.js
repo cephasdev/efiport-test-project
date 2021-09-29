@@ -284,7 +284,7 @@ app.get('/api/search/project', (req, res) => {
                 // })
                 .aggregate(lookupAggregationMap)
                 .toArray();
-            console.log(project);
+            // console.log(project);
             if (project.length == 0) {
                 return res.json({});
             }

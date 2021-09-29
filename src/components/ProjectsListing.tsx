@@ -20,20 +20,20 @@ function ProjectsListing() {
     const appState = useContext(StateContext);
     const appDispatch = useContext(DispatchContext);
 
-    useEffect(() => {
-        fetch('http://localhost:3001/api/projects')
-            .then((res) => res.json())
-            .then((data) => {
-                setProjects(data);
-                setIsLoading(false);
-            })
-            .catch((err) => {
-                console.log(
-                    'There was an error calling the /api/projects endpoint.'
-                );
-                setIsLoading(false);
-            });
-    }, []);
+    // useEffect(() => {
+    //     fetch('http://localhost:3001/api/projects')
+    //         .then((res) => res.json())
+    //         .then((data) => {
+    //             setProjects(data);
+    //             setIsLoading(false);
+    //         })
+    //         .catch((err) => {
+    //             console.log(
+    //                 'There was an error calling the /api/projects endpoint.'
+    //             );
+    //             setIsLoading(false);
+    //         });
+    // }, []);
 
     useEffect(() => {
         console.log('Taking projectsList!');
