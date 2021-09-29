@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './components/Header';
 import ProjectsListing from './components/ProjectsListing';
 import EditForm from './components/EditForm';
-import ProgramDetailsModal from './components/ProgramDetailsModal';
+import ProjectDetailsModal from './components/ProjectDetailsModal';
 import StateContext from './StateContext';
 import DispatchContext from './DispatchContext';
 import { useImmerReducer } from 'use-immer';
@@ -101,7 +101,7 @@ function App() {
                                 <EditForm />
                             </Route>
                         </Switch>
-                        <ProgramDetailsModal />
+                        <ProjectDetailsModal />
                     </BrowserRouter>
                 </DispatchContext.Provider>
             </StateContext.Provider>

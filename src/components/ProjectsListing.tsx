@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import Spinner from './Spinner';
 import DispatchContext from '../DispatchContext';
 import { IProject } from '../TypedInterfaces';
 import './ProjectsListing.css';
@@ -14,6 +15,7 @@ function ProjectsListing() {
     // }
 
     const [projects, setProjects] = useState<IProject[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const appDispatch = useContext(DispatchContext);
 
     useEffect(() => {
@@ -21,25 +23,34 @@ function ProjectsListing() {
             .then((res) => res.json())
             .then((data) => {
                 setProjects(data);
+                setIsLoading(false);
             })
             .catch((err) => {
                 console.log(
                     'There was an error calling the /api/projects endpoint.'
                 );
+                setIsLoading(false);
             });
     }, []);
 
     function handleProjectClick(projectId: string) {
+        setIsLoading(true);
         console.log('handleProjectClick', projectId);
         fetch(`http://localhost:3001/api/project/${projectId}`)
             .then((res) => res.json())
             .then((data) => {
                 console.log('/api/project/id', data);
                 appDispatch({ type: 'projectDetailsLoaded', value: data });
+                setIsLoading(false);
             })
             .catch((err) => {
                 console.log('There was an error fetching the project details.');
+                setIsLoading(false);
             });
+    }
+
+    if (isLoading) {
+        return <Spinner />;
     }
 
     return (

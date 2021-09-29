@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
 
-function ProgramDetailsModal() {
+function ProjectDetailsModal() {
     const appState = useContext(StateContext);
     const appDispatch = useContext(DispatchContext);
 
@@ -126,4 +126,4 @@ function ProgramDetailsModal() {
     );
 }
 
-export default ProgramDetailsModal;
+export default ProjectDetailsModal;

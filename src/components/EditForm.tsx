@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
+import Spinner from './Spinner';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
 import { IProgram } from '../TypedInterfaces';
@@ -22,6 +23,8 @@ function EditForm() {
     const [literature, setLiterature] = useState('');
     const [isGroupProject, setIsGroupProject] = useState(false);
     const [users, setUsers] = useState<string[]>([]);
+    const [isProgramsLoading, setIsProgramsLoading] = useState(true);
+    const [isResearchAreasLoading, setIsResearchAreasLoading] = useState(true);
 
     const predefinedUsers = [
         'John Smith',
@@ -38,11 +41,13 @@ function EditForm() {
             .then((res) => res.json())
             .then((data) => {
                 setPrograms(data);
+                setIsProgramsLoading(false);
             })
             .catch((err) => {
                 console.log(
                     'There was an error calling the /api/programs endpoint.'
                 );
+                setIsProgramsLoading(false);
             });
     }, []);
 
@@ -51,11 +56,13 @@ function EditForm() {
             .then((res) => res.json())
             .then((data) => {
                 setResearchAreas(data);
+                setIsResearchAreasLoading(false);
             })
             .catch((err) => {
                 console.log(
                     'There was an error calling the /api/researchareas endpoint.'
                 );
+                setIsResearchAreasLoading(false);
             });
     }, []);
 
@@ -95,6 +102,10 @@ function EditForm() {
             (option) => option.value
         );
         setUsers(values);
+    }
+
+    if (isProgramsLoading || isResearchAreasLoading) {
+        return <Spinner />;
     }
 
     return (
