@@ -28,6 +28,7 @@ export interface IProjectFilter {
 export interface IStateContextProps {
     programs: IProgram[];
     researchAreas: IResearchArea[];
+    projectsList: IProject[];
     isEditMode: boolean;
     projectDetailsModalOpen: boolean;
     projectDetails: IProject;

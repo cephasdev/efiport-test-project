@@ -23,6 +23,7 @@ const initialState = {
     isEditMode: false,
     programs: [],
     researchAreas: [],
+    projectsList: [],
     projectDetailsModalOpen: false,
     projectDetails: {} as IProject,
     savingNewProjectIsExecuting: false,
@@ -33,12 +34,39 @@ const initialState = {
     }
 };
 
+async function fetchProjects(url: string) {
+    return await fetch(
+        // `http://localhost:3001/api/search/project/${filterParams.program}/${filterParams.researchArea}`
+        url
+    ).then((res) => res.json());
+    // .then((data) => {
+    //     console.log(
+    //         // `/api/search/project/${filterParams.program}/${filterParams.researchArea}`,
+    //         endpointUrl,
+    //         data
+    //     );
+    //     // appDispatch({ type: 'projectDetailsLoaded', value: data });
+    //     // setIsLoading(false);
+    //     console.log('Received projectsList!');
+    //     // // draft.projectsList = data;
+    //     // appDispatch({ type: 'projectsListingLoaded' });
+    // })
+    // .catch((err) => {
+    //     console.log('There was an error filtering projects.');
+    //     console.log(err);
+    //     // setIsLoading(false);
+    // });
+}
+
 function appReducer(draft: any, action: any) {
     switch (action.type) {
         case 'programsLoaded':
             draft.programs = action.value;
             break;
         case 'researchAreasLoaded':
+            draft.researchAreas = action.value;
+            break;
+        case 'projectsListingLoaded':
             draft.researchAreas = action.value;
             break;
         case 'openEdit':
@@ -108,11 +136,30 @@ function appReducer(draft: any, action: any) {
             }
             endpointUrl += query.join('&');
             console.log(endpointUrl);
-            fetch(
-                // `http://localhost:3001/api/search/project/${filterParams.program}/${filterParams.researchArea}`
-                endpointUrl
-            )
-                .then((res) => res.json())
+            // async function fetchProjects(url) {
+            //     return await fetch(
+            //         // `http://localhost:3001/api/search/project/${filterParams.program}/${filterParams.researchArea}`
+            //         endpointUrl
+            //     ).then((res) => res.json());
+            //     // .then((data) => {
+            //     //     console.log(
+            //     //         // `/api/search/project/${filterParams.program}/${filterParams.researchArea}`,
+            //     //         endpointUrl,
+            //     //         data
+            //     //     );
+            //     //     // appDispatch({ type: 'projectDetailsLoaded', value: data });
+            //     //     // setIsLoading(false);
+            //     //     console.log('Received projectsList!');
+            //     //     // // draft.projectsList = data;
+            //     //     // appDispatch({ type: 'projectsListingLoaded' });
+            //     // })
+            //     // .catch((err) => {
+            //     //     console.log('There was an error filtering projects.');
+            //     //     console.log(err);
+            //     //     // setIsLoading(false);
+            //     // });
+            // }
+            fetchProjects(endpointUrl)
                 .then((data) => {
                     console.log(
                         // `/api/search/project/${filterParams.program}/${filterParams.researchArea}`,
@@ -121,12 +168,37 @@ function appReducer(draft: any, action: any) {
                     );
                     // appDispatch({ type: 'projectDetailsLoaded', value: data });
                     // setIsLoading(false);
-                    // TODO: draft.projectsList = data;
+                    console.log('Received projectsList!');
+                    // draft.projectsList = data;
+                    // appDispatch({ type: 'projectsListingLoaded' });
                 })
                 .catch((err) => {
                     console.log('There was an error filtering projects.');
+                    console.log(err);
                     // setIsLoading(false);
                 });
+            // fetch(
+            //     // `http://localhost:3001/api/search/project/${filterParams.program}/${filterParams.researchArea}`
+            //     endpointUrl
+            // )
+            //     .then((res) => res.json())
+            //     .then((data) => {
+            //         console.log(
+            //             // `/api/search/project/${filterParams.program}/${filterParams.researchArea}`,
+            //             endpointUrl,
+            //             data
+            //         );
+            //         // appDispatch({ type: 'projectDetailsLoaded', value: data });
+            //         // setIsLoading(false);
+            //         console.log('Received projectsList!');
+            //         // // draft.projectsList = data;
+            //         // appDispatch({ type: 'projectsListingLoaded' });
+            //     })
+            //     .catch((err) => {
+            //         console.log('There was an error filtering projects.');
+            //         console.log(err);
+            //         // setIsLoading(false);
+            //     });
             break;
         case 'projectsFilteringCleared':
             console.log('projectsFilteringCleared!!!');

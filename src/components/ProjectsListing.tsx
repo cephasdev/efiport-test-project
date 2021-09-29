@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Spinner from './Spinner';
+import StateContext from '../StateContext';
 import DispatchContext from '../DispatchContext';
 import { IProject } from '../TypedInterfaces';
 import './ProjectsListing.css';
@@ -16,6 +17,7 @@ function ProjectsListing() {
 
     const [projects, setProjects] = useState<IProject[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const appState = useContext(StateContext);
     const appDispatch = useContext(DispatchContext);
 
     useEffect(() => {
@@ -32,6 +34,12 @@ function ProjectsListing() {
                 setIsLoading(false);
             });
     }, []);
+
+    useEffect(() => {
+        console.log('Taking projectsList!');
+        setProjects(appState.projectsList);
+        setIsLoading(false);
+    }, [appState.projectsList]);
 
     function handleProjectClick(projectId: string) {
         setIsLoading(true);
