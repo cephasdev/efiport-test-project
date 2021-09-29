@@ -14,7 +14,8 @@ function FilterBox() {
     const appDispatch = useContext(DispatchContext);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/programs')
+        const port = process.env.APIPORT || 3001;
+        fetch(`http://localhost:${port}/api/programs`)
             .then((res) => res.json())
             .then((data) => {
                 setIsProgramsLoading(false);
@@ -29,7 +30,8 @@ function FilterBox() {
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/researchareas')
+        const port = process.env.APIPORT || 3001;
+        fetch(`http://localhost:${port}/api/researchareas`)
             .then((res) => res.json())
             .then((data) => {
                 setIsResearchAreasLoading(false);

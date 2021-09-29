@@ -15,7 +15,8 @@ function ProjectsListing() {
     }, [appState.projectsList]);
 
     function handleProjectClick(projectId: string) {
-        fetch(`http://localhost:3001/api/project/${projectId}`)
+        const port = process.env.APIPORT || 3001;
+        fetch(`http://localhost:${port}/api/project/${projectId}`)
             .then((res) => res.json())
             .then((data) => {
                 appDispatch({ type: 'projectDetailsLoaded', value: data });
@@ -51,7 +52,6 @@ function ProjectsListing() {
                                 }}
                             >
                                 <td>{project.title}</td>
-                                {/* <td>{project.program}</td> */}
                                 <td>{project.projectProgram[0].title}</td>
                                 <td>{project.isgroupproject ? '✔' : '❌'}</td>
                             </tr>

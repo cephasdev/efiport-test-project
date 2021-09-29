@@ -48,13 +48,13 @@ function App() {
                 try {
                     // save values from the edit form
                     if (action.value) {
-                        fetch('http://localhost:3001/api/project/new', {
+                        const port = process.env.APIPORT || 3001;
+                        fetch(`http://localhost:${port}/api/project/new`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(action.value)
-                            // body: action.value
                         })
                             .then((data) => {
                                 console.log(
@@ -89,7 +89,8 @@ function App() {
             case 'projectsFilterSelected':
                 draft.projectListIsLoading = true;
                 const filterParams = action.value;
-                let endpointUrl = 'http://localhost:3001/api/search/project?';
+                const port = process.env.APIPORT || 3001;
+                let endpointUrl = `http://localhost:${port}/api/search/project?`;
                 let query = [];
                 if (filterParams.program) {
                     query.push('program=' + filterParams.program);
@@ -130,7 +131,8 @@ function App() {
     const [state, dispatch] = useImmerReducer(appReducer, initialState);
 
     function loadAllProjects() {
-        fetch('http://localhost:3001/api/projects')
+        const port = process.env.APIPORT || 3001;
+        fetch(`http://localhost:${port}/api/projects`)
             .then((res) => res.json())
             .then((data) => {
                 dispatch({
