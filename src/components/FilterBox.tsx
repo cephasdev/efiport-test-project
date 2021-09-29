@@ -9,6 +9,7 @@ function FilterBox() {
     // const [researchAreas, setResearchAreas] = useState<IResearchArea[]>([]);
     const [program, setProgram] = useState('');
     const [researchArea, setResearchArea] = useState('');
+    const [isGroupProject, setIsGroupProject] = useState('');
     const [isProgramsLoading, setIsProgramsLoading] = useState(true);
     const [isResearchAreasLoading, setIsResearchAreasLoading] = useState(true);
 
@@ -49,18 +50,19 @@ function FilterBox() {
 
     useEffect(() => {
         console.log('filtering', 'program or researchArea changed.');
-        if (program || researchArea) {
+        if (program || researchArea || isGroupProject) {
             appDispatch({
                 type: 'projectsFilterSelected',
                 value: {
                     program,
-                    researchArea
+                    researchArea,
+                    isGroupProject
                 }
             });
         } else {
             appDispatch({ type: 'projectsFilteringCleared' });
         }
-    }, [program, researchArea]);
+    }, [program, researchArea, isGroupProject]);
 
     if (isProgramsLoading || isResearchAreasLoading) {
         return <Spinner />;
@@ -142,6 +144,25 @@ function FilterBox() {
                                 </option>
                             );
                         })}
+                    </select>
+                </div>
+                <div className="col-auto">
+                    <label
+                        htmlFor="filterIsGroupProject"
+                        className="col-form-label"
+                    >
+                        Group Project?
+                    </label>
+                </div>
+                <div className="col-auto">
+                    <select
+                        onChange={(ev) => setIsGroupProject(ev.target.value)}
+                        name="filterIsGroupProject"
+                        id="filterIsGroupProject"
+                    >
+                        <option value=""></option>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
                     </select>
                 </div>
             </div>

@@ -114,6 +114,9 @@ function App() {
                 if (filterParams.researchArea) {
                     query.push('researcharea=' + filterParams.researchArea);
                 }
+                if (filterParams.isGroupProject) {
+                    query.push('isgroupproject=' + filterParams.isGroupProject);
+                }
                 endpointUrl += query.join('&');
                 console.log(endpointUrl);
                 fetch(

@@ -209,6 +209,7 @@ app.get('/api/search/project', (req, res) => {
     console.log('/api/search/project started');
     console.log(req.query.program);
     console.log(req.query.researcharea);
+    console.log(req.query.isgroupproject);
 
     mongodb.MongoClient.connect(
         process.env.CONNECTIONSTRING,
@@ -274,6 +275,15 @@ app.get('/api/search/project', (req, res) => {
                 lookupAggregationMap.push({
                     $match: {
                         research_area: req.query.researcharea
+                    }
+                });
+            }
+            if (req.query.isgroupproject) {
+                const boolIsGroupProject =
+                    req.query.isgroupproject == 'yes' ? true : false;
+                lookupAggregationMap.push({
+                    $match: {
+                        isgroupproject: boolIsGroupProject
                     }
                 });
             }
