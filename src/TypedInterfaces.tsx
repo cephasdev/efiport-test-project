@@ -29,6 +29,7 @@ export interface IStateContextProps {
     programs: IProgram[];
     researchAreas: IResearchArea[];
     projectsList: IProject[];
+    projectListIsLoading: boolean;
     isEditMode: boolean;
     projectDetailsModalOpen: boolean;
     projectDetails: IProject;

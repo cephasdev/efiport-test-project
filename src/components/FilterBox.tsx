@@ -97,9 +97,7 @@ function FilterBox() {
         <div className="filter-box d-flex align-center container p-3">
             <div className="row g-3 align-items-center">
                 <div className="col-auto">
-                    <span id="passwordHelpInline" className="form-text">
-                        Filter projects:
-                    </span>
+                    <strong>Filter projects:</strong>
                 </div>
                 <div className="col-auto">
                     <label htmlFor="filterProgram" className="col-form-label">

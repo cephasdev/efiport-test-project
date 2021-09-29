@@ -57,7 +57,8 @@ function ProjectsListing() {
             });
     }
 
-    if (isLoading) {
+    // if (isLoading) {
+    if (appState.projectListIsLoading) {
         return <Spinner />;
     }
 

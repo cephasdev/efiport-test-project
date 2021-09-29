@@ -25,6 +25,7 @@ function App() {
         programs: [],
         researchAreas: [],
         projectsList: [],
+        projectListIsLoading: true,
         projectDetailsModalOpen: false,
         projectDetails: {} as IProject,
         savingNewProjectIsExecuting: false,
@@ -45,6 +46,7 @@ function App() {
                 break;
             case 'projectsListingLoaded':
                 draft.projectsList = action.value;
+                draft.projectListIsLoading = false;
                 break;
             case 'openEdit':
                 draft.isEditMode = true;
@@ -102,6 +104,7 @@ function App() {
                 break;
             case 'projectsFilterSelected':
                 console.log('projectsFilterSelected!!!');
+                draft.projectListIsLoading = true;
                 const filterParams = action.value;
                 let endpointUrl = 'http://localhost:3001/api/search/project?';
                 let query = [];
@@ -137,10 +140,12 @@ function App() {
                         console.log('There was an error filtering projects.');
                         console.log(err);
                         // setIsLoading(false);
+                        draft.projectListIsLoading = false;
                     });
                 break;
             case 'projectsFilteringCleared':
                 console.log('projectsFilteringCleared!!!');
+                draft.projectListIsLoading = true;
                 draft.projectFilters = {
                     program: '',
                     researchArea: '',
