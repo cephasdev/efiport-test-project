@@ -29,7 +29,11 @@ function ProgramDetailsModal() {
                             <div className="detail-fragment">
                                 <label htmlFor="program">Program:</label>
                                 <span className="px-3" id="program">
-                                    {appState.projectDetails.program}
+                                    {/* {appState.projectDetails.program} */}
+                                    {
+                                        appState.projectDetails
+                                            .projectProgram[0].title
+                                    }
                                 </span>
                             </div>
                             <div className="detail-fragment">
@@ -37,7 +41,11 @@ function ProgramDetailsModal() {
                                     Research Area:
                                 </label>
                                 <span className="px-3" id="research-area">
-                                    {appState.projectDetails.research_area}
+                                    {/* {appState.projectDetails.research_area} */}
+                                    {
+                                        appState.projectDetails
+                                            .projectResearchArea[0].title
+                                    }
                                 </span>
                             </div>
                             <div className="detail-fragment">

@@ -44,26 +44,54 @@ app.get('/api/researchareas', (req, res) => {
 });
 
 app.get('/api/projects', (req, res) => {
-    // const projectsFromDb = [
-    //     {
-    //         title: 'Project 10001',
-    //         program: 'Program 10001',
-    //         isGroupProject: false
-    //     },
-    //     {
-    //         title: 'Project 10002',
-    //         program: 'Program 10002',
-    //         isGroupProject: true
+    // // const projectsFromDb = [
+    // //     {
+    // //         title: 'Project 10001',
+    // //         program: 'Program 10001',
+    // //         isGroupProject: false
+    // //     },
+    // //     {
+    // //         title: 'Project 10002',
+    // //         program: 'Program 10002',
+    // //         isGroupProject: true
+    // //     }
+    // // ];
+    // // res.json(projectsFromDb);
+
+    // mongodb.MongoClient.connect(
+    //     process.env.CONNECTIONSTRING,
+    //     async function (err, client) {
+    //         const db = client.db();
+    //         const projectsCollection = db.collection('projects');
+    //         const projects = await projectsCollection.find().toArray();
+    //         res.json(projects);
     //     }
-    // ];
-    // res.json(projectsFromDb);
+    // );
 
     mongodb.MongoClient.connect(
         process.env.CONNECTIONSTRING,
         async function (err, client) {
             const db = client.db();
             const projectsCollection = db.collection('projects');
-            const projects = await projectsCollection.find().toArray();
+            const projects = await projectsCollection
+                .aggregate([
+                    {
+                        $addFields: {
+                            convertedProgramId: {
+                                $toObjectId: '$program'
+                            }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'programs',
+                            localField: 'convertedProgramId',
+                            foreignField: '_id',
+                            as: 'projectProgram'
+                        }
+                    }
+                ])
+                .toArray();
             res.json(projects);
         }
     );
@@ -85,10 +113,55 @@ app.get('/api/project/:id', (req, res) => {
         async function (err, client) {
             const db = client.db();
             const projectsCollection = db.collection('projects');
-            const project = await projectsCollection.findOne({
-                _id: mongodb.ObjectId(req.params.id)
-            });
-            res.json(project);
+            const project = await projectsCollection
+                // .findOne({
+                //     _id: mongodb.ObjectId(req.params.id)
+                // })
+                .aggregate([
+                    // { $match: { _id: mongodb.ObjectId(req.params.id) } },
+                    {
+                        $addFields: {
+                            convertedProgramId: {
+                                $toObjectId: '$program'
+                            }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'programs',
+                            localField: 'convertedProgramId',
+                            foreignField: '_id',
+                            as: 'projectProgram'
+                        }
+                    },
+                    {
+                        $addFields: {
+                            convertedResearchAreaId: {
+                                $toObjectId: '$research_area'
+                            }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'research_areas',
+                            localField: 'convertedResearchAreaId',
+                            foreignField: '_id',
+                            as: 'projectResearchArea'
+                        }
+                    },
+                    {
+                        $match: {
+                            _id: mongodb.ObjectId(req.params.id)
+                        }
+                    }
+                ])
+                .toArray();
+            console.log(project);
+            if (project.length == 0) {
+                return res.json({});
+            }
+
+            res.json(project[0]);
         }
     );
 });

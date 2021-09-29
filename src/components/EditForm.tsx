@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext, ChangeEvent } from 'react';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
+import { IProgram } from '../TypedInterfaces';
 
 function EditForm() {
-    interface IProgram {
-        _id: string;
-        title: string;
-    }
+    // interface IProgram {
+    //     _id: string;
+    //     title: string;
+    // }
     interface IArea {
         _id: string;
         title: string;

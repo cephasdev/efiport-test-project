@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import DispatchContext from '../DispatchContext';
+import { IProject } from '../TypedInterfaces';
 import './ProjectsListing.css';
 
 function ProjectsListing() {
-    interface IProject {
-        _id: string;
-        title: string;
-        program: string;
-        research_area: string;
-        isgroupproject: boolean;
-        users: string[];
-    }
+    // interface IProject {
+    //     _id: string;
+    //     title: string;
+    //     program: string;
+    //     research_area: string;
+    //     isgroupproject: boolean;
+    //     users: string[];
+    // }
 
     const [projects, setProjects] = useState<IProject[]>([]);
     const appDispatch = useContext(DispatchContext);
@@ -63,7 +64,8 @@ function ProjectsListing() {
                                 }}
                             >
                                 <td>{project.title}</td>
-                                <td>{project.program}</td>
+                                {/* <td>{project.program}</td> */}
+                                <td>{project.projectProgram[0].title}</td>
                                 <td>{project.isgroupproject ? '✔' : '❌'}</td>
                             </tr>
                         );
