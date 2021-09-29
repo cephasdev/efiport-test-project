@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, ChangeEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
+import { predefinedUsers } from './PredefinedUsers';
 
 function EditForm() {
     const history = useHistory();
@@ -12,13 +13,6 @@ function EditForm() {
     const [literature, setLiterature] = useState('');
     const [isGroupProject, setIsGroupProject] = useState(false);
     const [users, setUsers] = useState<string[]>([]);
-
-    const predefinedUsers = [
-        'John Smith',
-        'Farakh Khan',
-        'Ernesto Jimenez',
-        'Erich Koch'
-    ];
 
     const appState = useContext(StateContext);
     const appDispatch = useContext(DispatchContext);
