@@ -18,3 +18,19 @@ export interface IProject {
     projectProgram: IProgram[];
     projectResearchArea: IResearchArea[];
 }
+
+export interface IProjectFilter {
+    program: string;
+    researchArea: string;
+    isGroupProject: string;
+}
+
+export interface IStateContextProps {
+    programs: IProgram[];
+    researchAreas: IResearchArea[];
+    isEditMode: boolean;
+    projectDetailsModalOpen: boolean;
+    projectDetails: IProject;
+    savingNewProjectIsExecuting: boolean;
+    projectFilters: IProjectFilter;
+}

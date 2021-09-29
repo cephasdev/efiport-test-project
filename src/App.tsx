@@ -25,7 +25,12 @@ const initialState = {
     researchAreas: [],
     projectDetailsModalOpen: false,
     projectDetails: {} as IProject,
-    savingNewProjectIsExecuting: false
+    savingNewProjectIsExecuting: false,
+    projectFilters: {
+        program: '',
+        researchArea: '',
+        isGroupProject: ''
+    }
 };
 
 function appReducer(draft: any, action: any) {
@@ -89,6 +94,47 @@ function appReducer(draft: any, action: any) {
             break;
         case 'savingNewProjectStarted':
             draft.savingNewProjectIsExecuting = true;
+            break;
+        case 'projectsFilterSelected':
+            console.log('projectsFilterSelected!!!');
+            const filterParams = action.value;
+            let endpointUrl = 'http://localhost:3001/api/search/project?';
+            let query = [];
+            if (filterParams.program) {
+                query.push('program=' + filterParams.program);
+            }
+            if (filterParams.researchArea) {
+                query.push('researcharea=' + filterParams.researchArea);
+            }
+            endpointUrl += query.join('&');
+            console.log(endpointUrl);
+            fetch(
+                // `http://localhost:3001/api/search/project/${filterParams.program}/${filterParams.researchArea}`
+                endpointUrl
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(
+                        // `/api/search/project/${filterParams.program}/${filterParams.researchArea}`,
+                        endpointUrl,
+                        data
+                    );
+                    // appDispatch({ type: 'projectDetailsLoaded', value: data });
+                    // setIsLoading(false);
+                    // TODO: draft.projectsList = data;
+                })
+                .catch((err) => {
+                    console.log('There was an error filtering projects.');
+                    // setIsLoading(false);
+                });
+            break;
+        case 'projectsFilteringCleared':
+            console.log('projectsFilteringCleared!!!');
+            draft.projectFilters = {
+                program: '',
+                researchArea: '',
+                isGroupProject: ''
+            };
             break;
     }
 }

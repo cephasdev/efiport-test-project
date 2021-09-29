@@ -7,6 +7,8 @@ import { IProgram, IResearchArea } from '../TypedInterfaces';
 function FilterBox() {
     // const [programs, setPrograms] = useState<IProgram[]>([]);
     // const [researchAreas, setResearchAreas] = useState<IResearchArea[]>([]);
+    const [program, setProgram] = useState('');
+    const [researchArea, setResearchArea] = useState('');
     const [isProgramsLoading, setIsProgramsLoading] = useState(true);
     const [isResearchAreasLoading, setIsResearchAreasLoading] = useState(true);
 
@@ -44,6 +46,21 @@ function FilterBox() {
                 setIsResearchAreasLoading(false);
             });
     }, []);
+
+    useEffect(() => {
+        console.log('filtering', 'program or researchArea changed.');
+        if (program || researchArea) {
+            appDispatch({
+                type: 'projectsFilterSelected',
+                value: {
+                    program,
+                    researchArea
+                }
+            });
+        } else {
+            appDispatch({ type: 'projectsFilteringCleared' });
+        }
+    }, [program, researchArea]);
 
     if (isProgramsLoading || isResearchAreasLoading) {
         return <Spinner />;
@@ -90,7 +107,11 @@ function FilterBox() {
                     </label>
                 </div>
                 <div className="col-auto">
-                    <select name="filterProgram" id="filterProgram">
+                    <select
+                        onChange={(ev) => setProgram(ev.target.value)}
+                        name="filterProgram"
+                        id="filterProgram"
+                    >
                         <option value=""></option>
                         {appState.programs.map((prog, idx) => {
                             return (
@@ -110,7 +131,11 @@ function FilterBox() {
                     </label>
                 </div>
                 <div className="col-auto">
-                    <select name="filterResearchArea" id="filterResearchArea">
+                    <select
+                        onChange={(ev) => setResearchArea(ev.target.value)}
+                        name="filterResearchArea"
+                        id="filterResearchArea"
+                    >
                         <option value=""></option>
                         {appState.researchAreas.map((area, idx) => {
                             return (

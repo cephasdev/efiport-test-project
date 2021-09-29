@@ -201,4 +201,97 @@ app.post('/api/project/new', (req, res) => {
     );
 });
 
+// app.get('/api/project/search/:program?/:researcharea?', (req, res) => {
+app.get('/api/search/project', (req, res) => {
+    // console.log('/api/project/search/:program/:researcharea started');
+    // console.log(req.params.program);
+    // console.log(req.params.researcharea);
+    console.log('/api/search/project started');
+    console.log(req.query.program);
+    console.log(req.query.researcharea);
+
+    mongodb.MongoClient.connect(
+        process.env.CONNECTIONSTRING,
+        async function (err, client) {
+            const db = client.db();
+            const projectsCollection = db.collection('projects');
+
+            const lookupAggregationMap = [
+                // { $match: { _id: mongodb.ObjectId(req.params.id) } },
+                {
+                    $addFields: {
+                        convertedProgramId: {
+                            $toObjectId: '$program'
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'programs',
+                        localField: 'convertedProgramId',
+                        foreignField: '_id',
+                        as: 'projectProgram'
+                    }
+                },
+                {
+                    $addFields: {
+                        convertedResearchAreaId: {
+                            $toObjectId: '$research_area'
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'research_areas',
+                        localField: 'convertedResearchAreaId',
+                        foreignField: '_id',
+                        as: 'projectResearchArea'
+                    }
+                }
+            ];
+            // if (req.params.program) {
+            //     lookupAggregationMap.push({
+            //         $match: {
+            //             program: req.params.program
+            //         }
+            //     });
+            // }
+            // if (req.params.researcharea) {
+            //     lookupAggregationMap.push({
+            //         $match: {
+            //             research_area: req.params.researcharea
+            //         }
+            //     });
+            // }
+            if (req.query.program) {
+                lookupAggregationMap.push({
+                    $match: {
+                        program: req.query.program
+                    }
+                });
+            }
+            if (req.query.researcharea) {
+                lookupAggregationMap.push({
+                    $match: {
+                        research_area: req.query.researcharea
+                    }
+                });
+            }
+
+            const project = await projectsCollection
+                // .findOne({
+                //     _id: mongodb.ObjectId(req.params.id)
+                // })
+                .aggregate(lookupAggregationMap)
+                .toArray();
+            console.log(project);
+            if (project.length == 0) {
+                return res.json({});
+            }
+
+            res.json(project);
+        }
+    );
+});
+
 app.listen(process.env.APIPORT || 3001);
