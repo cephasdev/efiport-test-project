@@ -66,20 +66,21 @@ function FilterBox() {
 
     return (
         <div className="filter-box d-flex align-center container p-3">
-            <div className="row g-3 align-items-center">
-                <div className="col-auto">
+            <div className="row g-md-3 align-items-center">
+                <div className="col-xs-12 col-md-auto">
                     <strong>Filter projects:</strong>
                 </div>
-                <div className="col-auto">
+                <div className="col-xs-12 col-md-auto">
                     <label htmlFor="filterProgram" className="col-form-label">
                         Program
                     </label>
                 </div>
-                <div className="col-auto">
+                <div className="col-xs-12 col-md-auto">
                     <select
                         onChange={(ev) => setProgram(ev.target.value)}
                         name="filterProgram"
                         id="filterProgram"
+                        className="w-100"
                     >
                         <option value=""></option>
                         {appState.programs.map((prog, idx) => {
@@ -91,7 +92,7 @@ function FilterBox() {
                         })}
                     </select>
                 </div>
-                <div className="col-auto">
+                <div className="col-xs-12 col-md-auto">
                     <label
                         htmlFor="filterResearchArea"
                         className="col-form-label"
@@ -99,11 +100,12 @@ function FilterBox() {
                         Research Area
                     </label>
                 </div>
-                <div className="col-auto">
+                <div className="col-xs-12 col-md-auto">
                     <select
                         onChange={(ev) => setResearchArea(ev.target.value)}
                         name="filterResearchArea"
                         id="filterResearchArea"
+                        className="w-100"
                     >
                         <option value=""></option>
                         {appState.researchAreas.map((area, idx) => {
@@ -115,7 +117,7 @@ function FilterBox() {
                         })}
                     </select>
                 </div>
-                <div className="col-auto">
+                <div className="col-xs-12 col-md-auto">
                     <label
                         htmlFor="filterIsGroupProject"
                         className="col-form-label"
@@ -123,11 +125,12 @@ function FilterBox() {
                         Group Project?
                     </label>
                 </div>
-                <div className="col-auto">
+                <div className="col-xs-12 col-md-auto">
                     <select
                         onChange={(ev) => setIsGroupProject(ev.target.value)}
                         name="filterIsGroupProject"
                         id="filterIsGroupProject"
+                        className="w-100"
                     >
                         <option value=""></option>
                         <option value="yes">Yes</option>
