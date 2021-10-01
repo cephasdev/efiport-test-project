@@ -13,6 +13,7 @@ export interface IProject {
     title: string;
     program: string;
     research_area: string;
+    literature: string[];
     isgroupproject: boolean;
     users: string[];
     projectProgram: IProgram[];

@@ -46,6 +46,26 @@ function ProjectDetailsModal() {
                                     }
                                 </span>
                             </div>
+                            {appState.projectDetails.literature && (
+                                <div className="detail-fragment">
+                                    <label htmlFor="literature">
+                                        Literature:
+                                    </label>
+                                    <span className="px-3" id="research-area">
+                                        <ul>
+                                            {appState.projectDetails.literature.map(
+                                                (item, idx) => {
+                                                    return (
+                                                        <li key={idx}>
+                                                            {item}
+                                                        </li>
+                                                    );
+                                                }
+                                            )}
+                                        </ul>
+                                    </span>
+                                </div>
+                            )}
                             <div className="detail-fragment">
                                 <label htmlFor="research-area">
                                     Is Group Project:

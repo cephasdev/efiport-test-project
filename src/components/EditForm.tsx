@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
 import { predefinedUsers } from './PredefinedUsers';
+import Literature from './Literature';
 
 function EditForm() {
     const history = useHistory();
@@ -10,7 +11,8 @@ function EditForm() {
     const [title, setTitle] = useState('');
     const [program, setProgram] = useState('');
     const [researchArea, setResearchArea] = useState('');
-    const [literature, setLiterature] = useState('');
+    // const [literature, setLiterature] = useState('');
+    const [literature, setLiterature] = useState<string[]>([]);
     const [isGroupProject, setIsGroupProject] = useState(false);
     const [users, setUsers] = useState<string[]>([]);
 
@@ -21,7 +23,7 @@ function EditForm() {
         setTitle('');
         setProgram('');
         setResearchArea('');
-        setLiterature('');
+        setLiterature([]);
         setIsGroupProject(false);
         setUsers([]);
     }, []);
@@ -34,7 +36,7 @@ function EditForm() {
             title,
             program,
             researchArea,
-            literature: [literature],
+            literature,
             isGroupProject,
             users
         };
@@ -62,7 +64,7 @@ function EditForm() {
     return (
         <div className="edit-form container p-3">
             <h2>Edit Form</h2>
-            <form>
+            <div>
                 <div className="mb-3">
                     <label htmlFor="program" className="form-label">
                         Program
@@ -117,16 +119,9 @@ function EditForm() {
                     </select>
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="literature" className="form-label">
-                        Literature
-                    </label>
-                    <input
-                        type="text"
-                        onChange={(ev) => setLiterature(ev.target.value)}
-                        className="form-control"
-                        name="literature"
-                        id="literature"
-                        autoComplete="off"
+                    <Literature
+                        literatureItems={literature}
+                        setLiteratureItems={setLiterature}
                     />
                 </div>
                 <div className="mb-3 form-check">
@@ -178,7 +173,7 @@ function EditForm() {
                         aria-describedby="emailHelp"
                     />
                 </div>
-            </form>
+            </div>
         </div>
     );
 }
