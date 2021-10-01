@@ -80,7 +80,7 @@ function FilterBox() {
                         onChange={(ev) => setProgram(ev.target.value)}
                         name="filterProgram"
                         id="filterProgram"
-                        className="w-100"
+                        className="form-select w-100"
                     >
                         <option value=""></option>
                         {appState.programs.map((prog, idx) => {
@@ -105,7 +105,7 @@ function FilterBox() {
                         onChange={(ev) => setResearchArea(ev.target.value)}
                         name="filterResearchArea"
                         id="filterResearchArea"
-                        className="w-100"
+                        className="form-select w-100"
                     >
                         <option value=""></option>
                         {appState.researchAreas.map((area, idx) => {
@@ -130,7 +130,7 @@ function FilterBox() {
                         onChange={(ev) => setIsGroupProject(ev.target.value)}
                         name="filterIsGroupProject"
                         id="filterIsGroupProject"
-                        className="w-100"
+                        className="form-select w-100"
                     >
                         <option value=""></option>
                         <option value="yes">Yes</option>
