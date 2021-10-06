@@ -37,3 +37,7 @@ export interface IStateContextProps {
     savingNewProjectIsExecuting: boolean;
     projectFilters: IProjectFilter;
 }
+
+export interface IDispatchContextProps {
+    ({ type, value }: { type: string; value?: any }): void;
+}

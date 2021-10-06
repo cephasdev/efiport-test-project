@@ -1,8 +1,5 @@
 import { createContext } from 'react';
-
-interface IDispatchContextProps {
-    ({ type, value }: { type: string; value?: any }): void;
-}
+import { IDispatchContextProps } from './TypedInterfaces';
 
 const DispatchContext = createContext({} as IDispatchContextProps);
 
