@@ -1,9 +1,12 @@
-import { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Spinner from './Spinner';
-import DispatchContext from '../DispatchContext';
 import StateContext from '../StateContext';
+import { IProjectFilter } from '../TypedInterfaces';
 
-function FilterBox() {
+function FilterBox(props: {
+    projectFilters: IProjectFilter;
+    setProjectFilters: React.Dispatch<React.SetStateAction<IProjectFilter>>;
+}) {
     const [program, setProgram] = useState('');
     const [researchArea, setResearchArea] = useState('');
     const [isGroupProject, setIsGroupProject] = useState('');
@@ -11,53 +14,30 @@ function FilterBox() {
     const [isResearchAreasLoading, setIsResearchAreasLoading] = useState(true);
 
     const appState = useContext(StateContext);
-    const appDispatch = useContext(DispatchContext);
 
     useEffect(() => {
-        const port = process.env.APIPORT || 3001;
-        fetch(`http://localhost:${port}/api/programs`)
-            .then((res) => res.json())
-            .then((data) => {
-                setIsProgramsLoading(false);
-                appDispatch({ type: 'programsLoaded', value: data });
-            })
-            .catch((err) => {
-                console.log(
-                    'There was an error calling the /api/programs endpoint.'
-                );
-                setIsProgramsLoading(false);
-            });
-    }, []);
-
-    useEffect(() => {
-        const port = process.env.APIPORT || 3001;
-        fetch(`http://localhost:${port}/api/researchareas`)
-            .then((res) => res.json())
-            .then((data) => {
-                setIsResearchAreasLoading(false);
-                appDispatch({ type: 'researchAreasLoaded', value: data });
-            })
-            .catch((err) => {
-                console.log(
-                    'There was an error calling the /api/researchareas endpoint.'
-                );
-                setIsResearchAreasLoading(false);
-            });
-    }, []);
-
-    useEffect(() => {
-        if (program || researchArea || isGroupProject) {
-            appDispatch({
-                type: 'projectsFilterSelected',
-                value: {
-                    program,
-                    researchArea,
-                    isGroupProject
-                }
-            });
-        } else {
-            appDispatch({ type: 'projectsFilteringCleared' });
+        if (!appState.programs || appState.programs.length === 0) {
+            return;
         }
+        setIsProgramsLoading(false);
+    }, [appState.programs]);
+
+    useEffect(() => {
+        if (!appState.researchAreas || appState.researchAreas.length === 0) {
+            return;
+        }
+        setIsResearchAreasLoading(false);
+    }, [appState.researchAreas]);
+
+    useEffect(() => {
+        if (isProgramsLoading || isResearchAreasLoading) {
+            return;
+        }
+        props.setProjectFilters({
+            program,
+            researchArea,
+            isGroupProject
+        });
     }, [program, researchArea, isGroupProject]);
 
     if (isProgramsLoading || isResearchAreasLoading) {

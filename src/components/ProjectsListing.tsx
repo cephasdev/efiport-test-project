@@ -1,18 +1,13 @@
-import { useState, useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import Spinner from './Spinner';
 import StateContext from '../StateContext';
 import DispatchContext from '../DispatchContext';
-import { IProject } from '../TypedInterfaces';
+import { IProject, IProjectProps } from '../TypedInterfaces';
 import './ProjectsListing.css';
 
-function ProjectsListing() {
-    const [projects, setProjects] = useState<IProject[]>([]);
+function ProjectsListing(props: { projects: IProject[] }) {
     const appState = useContext(StateContext);
     const appDispatch = useContext(DispatchContext);
-
-    useEffect(() => {
-        setProjects(appState.projectsList);
-    }, [appState.projectsList]);
 
     function handleProjectClick(projectId: string) {
         const port = process.env.APIPORT || 3001;
@@ -43,7 +38,7 @@ function ProjectsListing() {
                     </tr>
                 </thead>
                 <tbody>
-                    {projects.map((project, idx) => {
+                    {props.projects.map((project: IProject) => {
                         return (
                             <tr
                                 key={project._id}

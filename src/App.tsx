@@ -1,151 +1,46 @@
+import { useEffect } from 'react';
 import Header from './components/Header';
-import ProjectsListing from './components/ProjectsListing';
 import EditForm from './components/EditForm';
 import ProjectDetailsModal from './components/ProjectDetailsModal';
 import StateContext from './StateContext';
 import DispatchContext from './DispatchContext';
 import { useImmerReducer } from 'use-immer';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import FilterBox from './components/FilterBox';
-import { IProject } from './TypedInterfaces';
+import { initialState, appReducer } from './AppReducer';
+import FilterableProjectsListing from './components/FilterableProjectsListing';
 
 function App() {
-    const initialState = {
-        isEditMode: false,
-        programs: [],
-        researchAreas: [],
-        projectsList: [],
-        projectListIsLoading: true,
-        projectDetailsModalOpen: false,
-        projectDetails: {} as IProject,
-        savingNewProjectIsExecuting: false,
-        projectFilters: {
-            program: '',
-            researchArea: '',
-            isGroupProject: ''
-        }
-    };
-
-    function appReducer(draft: any, action: any) {
-        switch (action.type) {
-            case 'programsLoaded':
-                draft.programs = action.value;
-                break;
-            case 'researchAreasLoaded':
-                draft.researchAreas = action.value;
-                break;
-            case 'projectsListingLoaded':
-                draft.projectsList = action.value;
-                draft.projectListIsLoading = false;
-                break;
-            case 'openEdit':
-                draft.isEditMode = true;
-                break;
-            case 'cancelEdit':
-                draft.isEditMode = false;
-                break;
-            case 'saveProject':
-                try {
-                    // save values from the edit form
-                    if (action.value) {
-                        const port = process.env.APIPORT || 3001;
-                        fetch(`http://localhost:${port}/api/project/new`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(action.value)
-                        })
-                            .then((data) => {
-                                console.log(
-                                    '/api/program/new',
-                                    'New project was successfully saved.'
-                                );
-                            })
-                            .catch((err) => {
-                                console.log(
-                                    'There was an error calling the /api/program/new endpoint.'
-                                );
-                                console.log(err);
-                            });
-                    }
-                    // close the edit form
-                    draft.isEditMode = false;
-                    draft.savingNewProjectIsExecuting = false;
-                } catch (err) {
-                    console.log('Error on save.');
-                }
-                break;
-            case 'projectDetailsLoaded':
-                draft.projectDetailsModalOpen = true;
-                draft.projectDetails = action.value;
-                break;
-            case 'closeProjectDetailsModal':
-                draft.projectDetailsModalOpen = false;
-                break;
-            case 'savingNewProjectStarted':
-                draft.savingNewProjectIsExecuting = true;
-                break;
-            case 'projectsFilterSelected':
-                draft.projectListIsLoading = true;
-                const filterParams = action.value;
-                const port = process.env.APIPORT || 3001;
-                let endpointUrl = `http://localhost:${port}/api/search/project?`;
-                let query = [];
-                if (filterParams.program) {
-                    query.push('program=' + filterParams.program);
-                }
-                if (filterParams.researchArea) {
-                    query.push('researcharea=' + filterParams.researchArea);
-                }
-                if (filterParams.isGroupProject) {
-                    query.push('isgroupproject=' + filterParams.isGroupProject);
-                }
-                endpointUrl += query.join('&');
-                fetch(endpointUrl)
-                    .then((res) => res.json())
-                    .then((data) => {
-                        dispatch({
-                            type: 'projectsListingLoaded',
-                            value: data
-                        });
-                    })
-                    .catch((err) => {
-                        console.log('There was an error filtering projects.');
-                        console.log(err);
-                        draft.projectListIsLoading = false;
-                    });
-                break;
-            case 'projectsFilteringCleared':
-                draft.projectListIsLoading = true;
-                draft.projectFilters = {
-                    program: '',
-                    researchArea: '',
-                    isGroupProject: ''
-                };
-                loadAllProjects();
-                break;
-        }
-    }
-
     const [state, dispatch] = useImmerReducer(appReducer, initialState);
 
-    function loadAllProjects() {
+    useEffect(() => {
         const port = process.env.APIPORT || 3001;
-        fetch(`http://localhost:${port}/api/projects`)
+        fetch(`http://localhost:${port}/api/programs`)
             .then((res) => res.json())
             .then((data) => {
-                dispatch({
-                    type: 'projectsListingLoaded',
-                    value: data
-                });
+                dispatch({ type: 'programsLoaded', value: data });
+                // state.programs = data;
             })
             .catch((err) => {
                 console.log(
-                    'There was an error calling the /api/projects endpoint.'
+                    'There was an error calling the /api/programs endpoint.'
                 );
             });
-    }
+    }, []);
+
+    useEffect(() => {
+        const port = process.env.APIPORT || 3001;
+        fetch(`http://localhost:${port}/api/researchareas`)
+            .then((res) => res.json())
+            .then((data) => {
+                dispatch({ type: 'researchAreasLoaded', value: data });
+                // state.researchAreas = data;
+            })
+            .catch((err) => {
+                console.log(
+                    'There was an error calling the /api/researchareas endpoint.'
+                );
+            });
+    }, []);
 
     return (
         <div className="App">
@@ -155,8 +50,7 @@ function App() {
                         <Header />
                         <Switch>
                             <Route path="/" exact>
-                                <FilterBox />
-                                <ProjectsListing />
+                                <FilterableProjectsListing />
                             </Route>
                             <Route path="/edit" exact>
                                 <EditForm />

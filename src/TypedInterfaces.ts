@@ -20,6 +20,20 @@ export interface IProject {
     projectResearchArea: IResearchArea[];
 }
 
+export interface IProjectProps {
+    projects: {
+        _id: string;
+        title: string;
+        program: string;
+        research_area: string;
+        literature: string[];
+        isgroupproject: boolean;
+        users: string[];
+        projectProgram: IProgram[];
+        projectResearchArea: IResearchArea[];
+    };
+}
+
 export interface IProjectFilter {
     program: string;
     researchArea: string;
