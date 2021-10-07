@@ -40,10 +40,34 @@ function EditForm() {
             isGroupProject,
             users
         };
-        appDispatch({
-            type: 'saveProject',
-            value: projectData
-        });
+
+        try {
+            // save values from the edit form
+
+            const port = process.env.APIPORT || 3001;
+            fetch(`http://localhost:${port}/api/project/new`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(projectData)
+            })
+                .then((data) => {
+                    console.log(
+                        '/api/program/new',
+                        'New project was successfully saved.'
+                    );
+                })
+                .catch((err) => {
+                    console.log(
+                        'There was an error calling the /api/program/new endpoint.'
+                    );
+                    console.log(err);
+                });
+            appDispatch({ type: 'savingNewProjectEnded' });
+        } catch (err) {
+            console.log('Error on save.', err);
+        }
     }, [appState.savingNewProjectIsExecuting]);
 
     useEffect(() => {

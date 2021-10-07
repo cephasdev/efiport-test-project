@@ -36,38 +36,6 @@ export function appReducer(draft: any, action: any) {
         case 'cancelEdit':
             draft.isEditMode = false;
             break;
-        case 'saveProject':
-            try {
-                // save values from the edit form
-                if (action.value) {
-                    const port = process.env.APIPORT || 3001;
-                    fetch(`http://localhost:${port}/api/project/new`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(action.value)
-                    })
-                        .then((data) => {
-                            console.log(
-                                '/api/program/new',
-                                'New project was successfully saved.'
-                            );
-                        })
-                        .catch((err) => {
-                            console.log(
-                                'There was an error calling the /api/program/new endpoint.'
-                            );
-                            console.log(err);
-                        });
-                }
-                // close the edit form
-                draft.isEditMode = false;
-                draft.savingNewProjectIsExecuting = false;
-            } catch (err) {
-                console.log('Error on save.');
-            }
-            break;
         case 'projectDetailsLoaded':
             draft.projectDetailsModalOpen = true;
             draft.projectDetails = action.value;
@@ -77,6 +45,11 @@ export function appReducer(draft: any, action: any) {
             break;
         case 'savingNewProjectStarted':
             draft.savingNewProjectIsExecuting = true;
+            break;
+        case 'savingNewProjectEnded':
+            // close the edit form
+            draft.isEditMode = false;
+            draft.savingNewProjectIsExecuting = false;
             break;
         case 'projectsFilteringCleared':
             draft.projectListIsLoading = true;

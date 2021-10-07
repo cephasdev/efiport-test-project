@@ -29,7 +29,7 @@ function Header() {
                         onClick={() => appDispatch({ type: 'cancelEdit' })}
                         className="btn btn-outline-primary btn-large m-1"
                     >
-                        Back to All Programs
+                        Back to All Projects
                     </Link>
                 </div>
                 <div className="d-flex flex-grow-1 justify-content-end">
@@ -58,7 +58,7 @@ function Header() {
                         onClick={() => appDispatch({ type: 'openEdit' })}
                         className="btn btn-primary btn-large m-1"
                     >
-                        Add New Program
+                        Add New Project
                     </Link>
                 </div>
             </div>
